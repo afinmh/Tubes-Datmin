@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dokumen: {{ filename }}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/document.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>Dokumen: {{ filename }}</h1>
+        <h2>Artikel</h2>
+        <pre>{{ content }}</pre>
+
+        <h3>Hasil Steaming</h3>
+        <p>Total Kata Dasar: {{ unique_word_count }}</p>
+        <p>Frekuensi Kata: {{ word_count }}</p>
+
+        <h3 style="margin-top: 10px;">Kata Dasar dan Frekuensinya</h3>
+        <div class="word-frequency-container">
+            {% for word, freq in word_frequency.items() %}
+                <div class="word-item">
+                    <span class="word">{{ word }}</span>: <span class="frequency">{{ freq }} kali</span>
+                </div>
+            {% endfor %}
+        </div>
+
+        <h3 style="margin-top: 20px;">StopWord dan Frekuensinya</h3>
+        <p>Total StopWord: {{ unique_stopword_count }}</p>
+        <p>Frekuensi StopWord: {{ stopword_count }}</p>
+        <div class="word-frequency-container">
+            {% for word, freq in stopword_frequency.items() %}
+                <div class="word-item">
+                    <span class="word">{{ word }}</span>: <span class="frequency">{{ freq }} kali</span>
+                </div>
+            {% endfor %}
+        </div>
+
+        <a href="{{ url_for('index') }}" class="back-link">Kembali ke Beranda</a>
+    </div>
+</body>
+</html>

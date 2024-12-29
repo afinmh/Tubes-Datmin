@@ -1,0 +1,95 @@
+/* Reset some basic styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Body Styling */
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #f4f7f6;
+    color: #333;
+    line-height: 1.6;
+}
+
+/* Container for content */
+.container {
+    width: 95%;
+    margin: 40px auto;
+    background-color: #ffffff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+h1 {
+    text-align: center;
+    font-size: 2rem;
+    color: #333;
+}
+
+h2, h3 {
+    color: #5c6bc0;
+    margin-bottom: 10px;
+}
+
+pre {
+    background-color: #f1f1f1;
+    padding: 15px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    font-size: 15px;
+}
+
+/* Link styling */
+a {
+    text-decoration: none;
+    color: #5c6bc0;
+    font-weight: bold;
+}
+
+
+/* Word frequency container */
+.word-frequency-container {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr); /* 5 kolom */
+    gap: 15px;
+    margin-top: 20px;
+}
+
+.word-item {
+    background-color: #fafafa;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.word {
+    font-weight: bold;
+    color: #388e3c;
+}
+
+.frequency {
+    color: #888;
+}
+
+/* Styling for the back link */
+.back-link {
+    display: inline-block;
+    margin-top: 30px;
+    padding: 10px 20px;
+    background-color: #5c6bc0;
+    color: white;
+    border-radius: 4px;
+    text-align: center;
+}
+
+.back-link:hover {
+    background-color: #3949ab;
+}

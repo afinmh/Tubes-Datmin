@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Daftar Dokumen</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Eksplorasi Dokumen</h1>
+        </header>
+
+        <div class="search-container">
+            <form action="{{ url_for('search') }}" method="post">
+                <input type="text" name="query" placeholder="Masukkan kata kunci untuk pencarian..." class="search-bar">
+                <button type="submit" class="search-button">Cari</button>
+            </form>
+        </div>
+
+        <div class="documents-grid">
+            {% for doc in documents %}
+                <div class="document-item">
+                    <a href="{{ url_for('document', filename=doc) }}">
+                        <img src="{{ url_for('static', filename='images/' + doc.split('.')[0] + '.jpg') }}" alt="{{ doc }}">
+                        <h3>{{ doc }}</h3>
+                    </a>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+
+
+
+    <button class="floating-button" id="openModalBtn">+</button>
+
+    <div id="myModal" class="modal">
+        <div class="modal-content">
+            <h2>Upload Dokumen Baru</h2>
+            <form action="/upload_document" method="POST" enctype="multipart/form-data">
+                <label for="image">Upload Gambar:</label>
+                <input type="file" name="image" id="image" required class="input1"><br><br>
+    
+                <label for="title">Judul:</label>
+                <input type="text" name="title" id="title" required class="input1"><br><br>
+    
+                <label for="content">Isi:</label>
+                <textarea name="content" id="content" rows="4" required></textarea><br><br>
+    
+                <button type="submit">OK</button>
+                <button type="button" id="tutup">Cancel</button>
+            </form>
+        </div>
+    </div>
+    <script>
+        // Menambahkan event listener untuk tombol
+        const modal = document.getElementById("myModal");
+        const openModalBtn = document.getElementById("openModalBtn");
+        const cancelBtn = document.getElementById("tutup");
+    
+        openModalBtn.onclick = function() {
+            modal.style.display = "block";
+        };
+    
+        cancelBtn.onclick = function() {
+            modal.style.display = "none";
+        };
+    
+        window.onclick = function(event) {
+            if (event.target == modal) {
+                modal.style.display = "none";
+            }
+        };
+    </script>
+</body>
+</html>
+    

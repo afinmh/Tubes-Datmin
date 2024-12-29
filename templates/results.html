@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hasil Pencarian</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/hasil.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1 style="margin-bottom: 20px;">Hasil Pencarian untuk: "{{ query }}"</h1>
+        
+        <!-- Menggunakan div dengan class "results" untuk grid -->
+        <div class="documents-grid">
+            {% for doc, score in similarity_scores %}
+                <div class="document-item">
+                    <div class="image-container">
+                        <img src="{{ url_for('static', filename='images/' + doc.split('.')[0] + '.jpg') }}" alt="{{ doc }}">
+                    </div>
+                    <h3>{{ doc }}</h3>
+                    <p style="margin-bottom: 10px;">Skor: {{ score }}</p>
+                    <a href="{{ url_for('document', filename=doc) }}">Lihat Dokumen</a>
+                </div>
+            {% endfor %}
+        </div>
+
+        <a href="{{ url_for('index') }}" class="back-link">Kembali ke Beranda</a>
+    </div>
+</body>
+</html>
