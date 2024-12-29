@@ -5,6 +5,8 @@ import os
 import re
 from werkzeug.utils import secure_filename
 import csv
+import PyPDF2
+from docx import Document
 
 app = Flask(__name__)
 
@@ -23,10 +25,34 @@ def allowed_file(filename):
 def load_documents():
     docs = {}
     for filename in os.listdir(DOCUMENTS_DIR):
-        if filename.endswith(".txt"):
-            with open(os.path.join(DOCUMENTS_DIR, filename), 'r', encoding='utf-8') as file:
+        file_path = os.path.join(DOCUMENTS_DIR, filename)
+        file_extension = filename.rsplit('.', 1)[1].lower()
+        
+        if file_extension == "txt":
+            with open(file_path, 'r', encoding='utf-8') as file:
                 docs[filename] = file.read()
+        elif file_extension == "pdf":
+            docs[filename] = read_pdf(file_path)
+        elif file_extension == "docx":
+            docs[filename] = read_docx(file_path)
+    
     return docs
+
+def read_pdf(file_path):
+    with open(file_path, 'rb') as file:
+        reader = PyPDF2.PdfReader(file)
+        text = ''
+        for page in reader.pages:
+            text += page.extract_text()
+        return text
+
+def read_docx(file_path):
+    doc = Document(file_path)
+    text = ''
+    for para in doc.paragraphs:
+        text += para.text
+    return text
+
 
 def load_stopwords():
     stopwords = set()
@@ -61,8 +87,41 @@ def upload_document():
         return "Invalid file type or no file uploaded"
 
 def load_document_by_name(filename):
-    with open(os.path.join(DOCUMENTS_DIR, filename), 'r', encoding='utf-8') as file:
-        return file.read()
+    file_path = os.path.join(DOCUMENTS_DIR, filename)
+    file_extension = filename.split('.')[-1].lower()
+    
+    if file_extension == 'txt':
+        try:
+            with open(file_path, 'r', encoding='utf-8') as file:
+                return file.read()
+        except UnicodeDecodeError:
+            with open(file_path, 'r', encoding='latin-1') as file:
+                return file.read()
+    
+    elif file_extension == 'pdf':
+        try:
+            with open(file_path, 'rb') as file:
+                reader = PyPDF2.PdfReader(file)
+                text = ""
+                for page in reader.pages:
+                    text += page.extract_text()
+                return text
+        except Exception as e:
+            return f"Error reading PDF: {e}"
+    
+    elif file_extension == 'docx':
+        try:
+            doc = Document(file_path)
+            text = ""
+            for paragraph in doc.paragraphs:
+                text += paragraph.text + '\n'
+            return text
+        except Exception as e:
+            return f"Error reading DOCX: {e}"
+    
+    else:
+        return f"Unsupported file type: {file_extension}"
+
     
 def preprocess_text(text):
     text = text.lower()
