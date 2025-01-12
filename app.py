@@ -144,13 +144,8 @@ def preprocess_text(text):
 def get_bm25_similarity(query, documents):
     processed_query, _ = preprocess_text(query)
     
-    # Preprocessing dokumen menjadi token saja
     processed_docs = [preprocess_text(doc_text)[0] for doc_text in documents.values()]
-    
-    # Menyusun BM25 dengan dokumen yang telah diproses
     bm25 = BM25Okapi(processed_docs)
-    
-    # Menghitung skor kemiripan query dengan dokumen
     query_bm25_score = bm25.get_scores(processed_query)
     
     return sorted(zip(documents.keys(), query_bm25_score), key=lambda x: x[1], reverse=True)
